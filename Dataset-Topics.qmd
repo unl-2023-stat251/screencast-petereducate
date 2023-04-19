@@ -1,23 +1,23 @@
 ---
-author: "Your Name"
+author: "Peter Educate"
 date: "2023-04-18"
 title: "Project Dataset and Topics"
 output: html
 categories: project
 ---
 
-[Link to dataset]()
+[Link to dataset](https://www.kaggle.com/datasets/salvatorerastelli/spotify-and-youtube)
 
-Things you plan to investigate using this dataset:
+What I Plan to Investigate:
 
-- Thing 1
-- Thing 2
-- Thing 3
+Most Popular Artist (by view and stream)
+Danceability by Artist 
+Types of Sound of Effect on Stream/View (i.e. acoustic, temp, etc.)
 
-Stat 251 topics you plan to cover during the analysis:
+Stat 251 Topics:
 
-1. Topic 1
-2. Topic 2
-3. Topic 3
-4. Topic 4
+Data Cleaning (pivoting data)
+Reshaping Data (filtering data)
+Dates and Times (using duration of the song and converting to minute/second (e.g. 3:30))
+Visualizing Data (graphing popularity)
 
