@@ -6,18 +6,18 @@ output: html
 categories: project
 ---
 
-[Link to dataset](https://www.kaggle.com/datasets/salvatorerastelli/spotify-and-youtube)
+[Link to dataset]("https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2022/2022-11-01/horror_movies.csv")
 
 What I Plan to Investigate:
 
-Most Popular Artist (by view and stream)
-Danceability by Artist 
-Types of Sound of Effect on Stream/View (i.e. acoustic, temp, etc.)
+Most Popular Horror Movie (by popularity and revenue)
+If "R" Rated Movies Have any Effect on Watchability 
+Types of "Horror" Movie (i.e. horror, thriller, sc/fi, etc.)
 
 Stat 251 Topics:
 
 Data Cleaning (pivoting data)
 Reshaping Data (filtering data)
-Dates and Times (using duration of the song and converting to minute/second (e.g. 3:30))
+Dates and Times (using duration of the movie and converting to hour/minute (e.g. 1 hour and 24 minutes))
 Visualizing Data (graphing popularity)
 
