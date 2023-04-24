@@ -1,8 +1,33 @@
 ---
-author: "Your Name"
+author: "Peter Educate"
 date: "2023-04-20"
 title: "Screencast Pseudocode"
 output: html
 categories: project
 ---
 
+1. Changing the Data
+  a. Identifying R-Rated Movies 
+    i. str_replace_all(adult, c("FALSE" = "1", "TRUE" = "0")) %>%
+      as.numeric()
+  b. Creating a Readable Runtime
+    i. library(lubridate)
+      res <- hms(runtime) 
+      hour(res)*60 + minute(res)
+  c. Separate Movie by Category
+   i.  separate(genre_names, into=c("horror", "thriller", "mystery"), sep=" ")
+
+2. Most Popular Horror Movie By Popularity and Revenue
+    a. ggplot(horror_movies, aes(x = title, y = Popularity, color = type)) + geom_line()
+    b. ggplot(horror_movies, aes(x = title, y = Revenue, color = type)) + geom_line()
+
+3. If "R" Rated Movies Have any Effect on Watchability 
+  a. ggplot(data = horror_movies, aes(x = title, y = popularity, color = adult)) +
+  geom_point() +
+  geom_smooth(method = "loess") 
+
+4. Types of "Horror" Movie (i.e. horror, thriller, sc/fi, etc.)
+  a. ggplot(horror_movies), aes(x = revenue, fill = factor(genre))) +
+  geom_bar(color = "black", position = "fill") +
+  coord_flip()
+    

@@ -16,7 +16,7 @@ Types of "Horror" Movie (i.e. horror, thriller, sc/fi, etc.)
 
 Stat 251 Topics:
 
-
+Working With Strings (separating movies by theme)
 Reshaping Data (filtering data)
 Dates and Times (using duration of the movie and converting to hour/minute (e.g. 1 hour and 24 minutes))
 Visualizing Data (graphing popularity)
