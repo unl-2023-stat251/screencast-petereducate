@@ -10,24 +10,30 @@ categories: project
   a. Identifying R-Rated Movies 
     i. str_replace_all(adult, c("FALSE" = "1", "TRUE" = "0")) %>%
       as.numeric()
+    ii. This will easily identify which movies are R-rated and those that are not. 
   b. Creating a Readable Runtime
     i. library(lubridate)
       res <- hms(runtime) 
       hour(res)*60 + minute(res)
+    ii. This will allow for the movies to read as 1 hour and 24 minutes
   c. Separate Movie by Category
    i.  separate(genre_names, into=c("horror", "thriller", "mystery"), sep=" ")
+   ii. This will separate movies by genre to pick which kinds of movies I choose to observe.
 
 2. Most Popular Horror Movie By Popularity and Revenue
     a. ggplot(horror_movies, aes(x = title, y = Popularity, color = type)) + geom_line()
     b. ggplot(horror_movies, aes(x = title, y = Revenue, color = type)) + geom_line()
+    c. This will highlight the differences in movies based on their popularity from viewers and which generated the most revenue.
 
 3. If "R" Rated Movies Have any Effect on Watchability 
   a. ggplot(data = horror_movies, aes(x = title, y = popularity, color = adult)) +
   geom_point() +
   geom_smooth(method = "loess") 
+  b. This will show if R-rated movies are more or less successful as horror movies which might indicate if the rating has any affect on how many people watch it.
 
 4. Types of "Horror" Movie (i.e. horror, thriller, sc/fi, etc.)
   a. ggplot(horror_movies), aes(x = revenue, fill = factor(genre))) +
   geom_bar(color = "black", position = "fill") +
   coord_flip()
+  b. This will show if one genre is more popular than another and how it might affect the viewing. 
     
