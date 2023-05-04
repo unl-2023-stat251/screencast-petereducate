@@ -40,6 +40,8 @@ horror_movies_filtered <- horror_movies_filtered %>%
 
 library(dplyr)
 
+#Data Cleaning
+
 #Identifying Horror Movies as Part of a Collection 
 horror_movies_filtered <- horror_movies_filtered %>% 
   mutate(collection = ifelse(is.na(collection), "NO", "YES"))
@@ -121,6 +123,8 @@ plot_grid(monthpopularity, monthrevenue, ncol = 1 )
 ```{r}
 
 library(lubridate)
+
+#Using Dates and Times
 
 horror_movies_decades <- horror_movies_filtered %>%
   mutate(release_year = year(as.Date(release_date)),
