@@ -6,17 +6,137 @@ output: html
 categories: project
 ---
 
-[Link to dataset](https://www.kaggle.com/datasets/salvatorerastelli/spotify-and-youtube)
+[Link to dataset]("https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2022/2022-11-01/horror_movies.csv")
 
-What I Plan to Investigate:
+```{r}
+library(readr)
+library(tidyverse)
 
-Most Popular Artist (by view and stream)
-Danceability by Artist 
-Types of Sound of Effect on Stream/View (i.e. acoustic, temp, etc.)
+horror_movies <- read_csv("https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2022/2022-11-01/horror_movies.csv")
+```
 
-Stat 251 Topics:
+```{r}
 
-Data Cleaning (pivoting data)
-Reshaping Data (filtering data)
-Dates and Times (using duration of the song and converting to minute/second (e.g. 3:30))
-Visualizing Data (graphing popularity)
+library(dplyr)
+
+#Setting Up our Data
+
+#Converting runtime from minutes to hours and remaining minutes
+horror_movies$hours <- horror_movies$runtime %/% 60
+horror_movies$remaining_minutes <- horror_movies$runtime %% 60
+horror_movies$duration <- sprintf("%02d:%02d", horror_movies$hours, horror_movies$remaining_minutes)
+
+```
+
+```{r}
+#Filter For Just Horror Movies
+
+horror_movies_filtered <- separate(horror_movies, genre_names, into = c("genre_1", "genre_2", "genre_3"), sep = ",")
+
+horror_movies_filtered <- select(horror_movies_filtered, -"genre_2", -"genre_3", -"runtime", -"hours", -"remaining_minutes")
+
+horror_movies_filtered <- horror_movies_filtered %>%
+  filter(grepl("horror", genre_1, ignore.case = TRUE))
+
+library(dplyr)
+
+#Identifying Horror Movies as Part of a Collection 
+horror_movies_filtered <- horror_movies_filtered %>% 
+  mutate(collection = ifelse(is.na(collection), "NO", "YES"))
+
+```
+
+```{r}
+library(ggplot2)
+library(cowplot)
+
+popularity <- arrange(horror_movies_filtered, desc(popularity))
+                       
+top10popular <- head(popularity, 10)
+
+popularchart <- ggplot(top10popular, aes(x = title, y = popularity)) +
+  geom_col() +
+  coord_flip() +
+  theme_minimal()+
+  labs(title="Top 10 Horror Movies by Popularity", x="Movie", y="Popularity")
+
+revenue <- arrange(horror_movies_filtered, desc(revenue))
+                       
+top10revenue <- head(revenue, 10)
+
+#Converting Revenue from Scientfic Notation to Standard
+options(scipen=999)
+
+revenuechart <- ggplot(top10revenue, aes(x = title, y = revenue)) +
+  geom_col() +
+  coord_flip() +
+  theme_minimal()+
+  labs(title="Top 10 Horror Movies by Revenue", x="Movie", y="Revenue")
+
+plot_grid(popularchart, revenuechart, ncol =1) 
+```
+
+```{r}
+
+collections <- horror_movies_filtered %>%
+  filter(collection_name %in% c('Paranormal Activity Collection', 'Friday the 13th Collection', 'Saw Collection', 'Scream Collection', 'Halloween Collection', 'The Conjuring Collection', 'A Nightmare on Elm Street Collection'))
+
+
+popularitychart2 <- ggplot(collections, aes(x = release_date , y = popularity, color = collection_name)) + geom_line() +
+  ggtitle("Horror Movie Franchises by Popularity") + theme_minimal()
+
+revenuechart2 <- ggplot(collections, aes(x = release_date , y = revenue, color = collection_name)) + geom_line() +
+  ggtitle("Horror Movie Franchises by Revenue") + theme_minimal()
+
+plot_grid(popularitychart2, revenuechart2, ncol = 1)
+```
+
+```{r}
+#Identifying Horror Movies as Part of a Collection 
+
+library(dplyr)
+library(tidyr)
+library(reticulate)
+library(lubridate)
+
+horror_movies_by_month <- horror_movies_filtered %>% 
+  mutate(month = month.name[as.integer(format(as.Date(release_date), "%m"))])
+
+horror_movies_by_month$month <- factor(horror_movies_by_month$month, levels = (month.name))
+
+monthpopularity <- ggplot(horror_movies_by_month, aes(x = month, y = popularity)) +
+  geom_col() +
+  theme_minimal()+
+  labs(title="Horror Movies by Popularity for Each Month", x="Month", y="Popularity")
+
+monthrevenue <- ggplot(horror_movies_by_month, aes(x = month, y = revenue)) +
+  geom_col() +
+  theme_minimal()+
+  labs(title="Horror Movies by Revenue for Each Month", x="Month", y="Revenue")
+
+plot_grid(monthpopularity, monthrevenue, ncol = 1 )
+  
+```
+
+```{r}
+
+library(lubridate)
+
+horror_movies_decades <- horror_movies_filtered %>%
+  mutate(release_year = year(as.Date(release_date)),
+         decade = paste0(release_year %/% 10 * 10, "s"))
+
+decadepopularity <- ggplot(horror_movies_decades, aes(x = decade, y = popularity)) +
+  geom_col() +
+  theme_minimal()+
+  labs(title="Horror Movies by Popularity for Each Decade", x="Month", y="Popularity")
+
+decaderevenue <- ggplot(horror_movies_decades, aes(x = decade, y = revenue)) +
+  geom_col() +
+  theme_minimal()+
+  labs(title="Horror Movies by Revenue for Each Decade", x="Month", y="Revenue")
+
+plot_grid(decadepopularity, decaderevenue, ncol = 1 )
+
+```
+
